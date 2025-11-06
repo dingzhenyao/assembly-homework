@@ -9,13 +9,16 @@ start:
     mov cx, 26        ; 总循环次数：26个小写字母
     mov bl, 0         ; 行内计数器（0-12，记录当前行已输出的字符数）
     mov dl, 'a'       ; 起始字符：'a'（ASCII=97）
-   
 
 print_loop:
     ; 输出当前字符
     mov ah, 02h       ; DOS中断：显示单个字符（dl为字符ASCII码）
     int 21h
-
+    push dx
+    mov dl, ' '
+    mov ah, 02h
+    int 21h
+    pop dx
     inc dl            ; 更新为下一个字符的ASCII码
     inc bl            ; 行内计数+1
 
