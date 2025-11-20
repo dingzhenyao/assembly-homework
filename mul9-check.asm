@@ -14,6 +14,8 @@ data segment
     crlf  db 0dh, 0ah, '$'           ; 回车换行符（用于格式化输出）
     errmsg db ' error', '$'          ; 错误提示字符串
     overmsg db 'accomplish!$', 0dh, 0ah ; 完成提示字符串
+    msg1 db 'x y$'
+
 data ends
 
 code segment
@@ -22,7 +24,11 @@ code segment
 start:
     mov ax, data    ; 初始化数据段（DOS下必须显式设置DS）
     mov ds, ax
-    
+    mov ah, 09h    ; 输出提示信息
+    lea dx, msg1
+    int 21h
+    lea dx, crlf
+    int 21h
 
     ; 外层循环：i从1到9（行循环）
     mov cx, 9       ; CX=9（循环次数）
