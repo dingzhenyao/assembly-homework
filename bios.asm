@@ -25,6 +25,8 @@ input:
     jmp input
 
 end_input:
-    mov ah, 4Ch
-    int 21h
+    mov ax, es     
+    push ax
+    push 0
+    retf 
 end start
