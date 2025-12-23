@@ -31,8 +31,8 @@ start:
     ; 3. 有符号数加法+溢出检测（调用子程序）
     mov ax, a
     mov bx, b
-    call add_signed      ; 加法：ax + bx，结果存sum，检测OF
-    jc overflow_err      ; 若OF=1，跳转报错（jo等价于jc检测OF）
+    call add_signed      ; 加法：ax + bx，结果存sum，检测OF（OF由 add 指令设置）
+    jo overflow_err     ; 若 OF=1（有符号溢出）则跳转报错；注意不要用 JC（检查 CF）
 
     ; 4. 输出结果
     mov ah, 09h
@@ -113,7 +113,8 @@ input_signed endp
 
 ; 子程序2：16位有符号数加法+溢出检测
 ; 输入：ax = 被加数，bx = 加数
-; 输出：sum = ax + bx；OF标志位（溢出时OF=1）
+; 输出：sum = ax + bx；OF 标志位（溢出时 OF=1）
+; 注意：有符号溢出应使用 JO 检查 OF（而非 JC 检查 CF）
 add_signed proc
     push ax
     add ax, bx           ; 有符号数加法，OF自动置1（溢出时）
